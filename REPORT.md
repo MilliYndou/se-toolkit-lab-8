@@ -72,3 +72,53 @@ Here are the available labs:
 Which lab would you like to see the scores for? Please specify by lab ID (e.g., lab-01, lab-02, etc.).
 
 **Skill file location:** nanobot/workspace/skills/lms/SKILL.md
+
+---
+
+## Task 2A — Deployed agent
+
+Nanobot gateway is running with:
+- WebChat channel enabled on port 8765
+- MCP server lms: connected, 9 tools registered
+- MCP server webchat: connected, 1 tools registered
+- Agent loop started
+
+---
+
+## Task 2B — Web client
+
+WebSocket endpoint: /ws/chat on port 42002
+Flutter client: http://vm-ip:42002/flutter
+Access key: 12345
+
+---
+
+## Task 2A — Deployed agent
+
+Nanobot gateway startup log:
+
+Channels enabled: webchat
+WebChat relay listening on 127.0.0.1:8766
+WebChat starting on 0.0.0.0:8765
+server listening on 0.0.0.0:8765
+MCP server lms: connected, 9 tools registered
+MCP server webchat: connected, 1 tools registered
+Agent loop started
+
+---
+
+## Task 2B — Web client
+
+WebSocket test response:
+Here are the available labs:
+lab-01: Lab 01 – Products, Architecture & Roles
+lab-02: Lab 02 — Run, Fix, and Deploy a Backend Service
+lab-03: Lab 03 — Backend API: Explore, Debug, Implement, Deploy
+lab-04: Lab 04 — Testing, Front-end, and AI Agents
+lab-05: Lab 05 — Data Pipeline and Analytics Dashboard
+lab-06: Lab 06 — Build Your Own Agent
+lab-07: Lab 07 — Build a Client with an AI Coding Agent
+lab-08: lab-08
+
+Flutter client: http://vm-ip:42002/flutter
+Access key: 12345
