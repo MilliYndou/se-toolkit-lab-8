@@ -14,7 +14,7 @@ COPY --from=workspace mcp /app/mcp
 COPY --from=workspace nanobot-websocket-channel /app/nanobot-websocket-channel
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-install-workspace --package nanobot
+    uv sync --frozen --package nanobot
 
 COPY . /app/nanobot
 
