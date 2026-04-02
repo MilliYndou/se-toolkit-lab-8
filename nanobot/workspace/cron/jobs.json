@@ -1,4 +1,71 @@
 {
   "version": 1,
-  "jobs": []
+  "jobs": [
+    {
+      "id": "e3c266fd",
+      "name": "🔍 LMS Health Check: Checking f",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "atMs": null,
+        "everyMs": 120000,
+        "expr": null,
+        "tz": null
+      },
+      "payload": {
+        "kind": "agent_turn",
+        "message": "🔍 LMS Health Check: Checking for backend errors in the last 2 minutes...",
+        "deliver": true,
+        "channel": "webchat",
+        "to": "66dc61c5-7726-48eb-9f78-2e54abf420be"
+      },
+      "state": {
+        "nextRunAtMs": 1775090679340,
+        "lastRunAtMs": 1775090548481,
+        "lastStatus": "ok",
+        "lastError": null,
+        "runHistory": [
+          {
+            "runAtMs": 1775089849979,
+            "status": "ok",
+            "durationMs": 27719,
+            "error": null
+          },
+          {
+            "runAtMs": 1775089997700,
+            "status": "ok",
+            "durationMs": 24784,
+            "error": null
+          },
+          {
+            "runAtMs": 1775090142487,
+            "status": "ok",
+            "durationMs": 14870,
+            "error": null
+          },
+          {
+            "runAtMs": 1775090277358,
+            "status": "ok",
+            "durationMs": 16036,
+            "error": null
+          },
+          {
+            "runAtMs": 1775090413395,
+            "status": "ok",
+            "durationMs": 15085,
+            "error": null
+          },
+          {
+            "runAtMs": 1775090548481,
+            "status": "ok",
+            "durationMs": 10859,
+            "error": null
+          }
+        ]
+      },
+      "createdAtMs": 1775089729978,
+      "updatedAtMs": 1775090559340,
+      "deleteAfterRun": false
+    }
+  ]
 }
