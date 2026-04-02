@@ -195,3 +195,66 @@ mcp_obs_traces_get
 
 
 ---
+
+##Task 4A - Multi-step investigation
+Question: What went wrong?
+
+Agent response: Based on my investigation of the traces, here’s what went wrong:
+
+Root Cause: Database Connection Failure
+
+The Learning Management Service backend failed to connect to the PostgreSQL database.
+
+Log Evidence:
+
+Error: [Errno -2] Name or service not known
+Service: Learning Management Service
+Operation: db_query (SELECT from item table)
+Trace Evidence:
+
+Trace shows failure at: db_query span
+Root span: request_started -> auth_success -> db_query (ERROR)
+Tool calls used:
+
+mcp_obs_logs_error_count
+mcp_obs_logs_search
+mcp_obs_traces_list
+
+##Task 4B - Proactive health check
+Cron job created:
+
+Job ID: e3c266fd
+Schedule: Every 120 seconds (2 minutes)
+
+Proactive health report (while PostgreSQL was stopped):
+
+Status: UNHEALTHY
+1 ERROR in last 2 minutes
+Service: Learning Management Service
+Error: Database connection failure
+
+##Task 4C - Bug fix and recovery
+
+Root Cause - Planted Bug:
+
+Location: backend/src/lms_backend/routers/items.py, function get_items()
+
+Bug: The exception handler caught ALL exceptions and returned HTTP 404 “Items not found” instead of surfacing the real database error.
+
+Fix:
+
+Changed: Re-raise the exception instead of hiding it behind a 404.
+
+Post-fix failure check:
+
+After rebuild and with PostgreSQL stopped, the agent now reports the REAL error instead of “404 Items not found”.
+
+**Agent response (after fix, PostgreSQL stopped):**
+“The LMS backend is experiencing a database connection failure. The error shows: [Errno -2] Name or service not known. This indicates the PostgreSQL database is unreachable.”
+
+Healthy follow-up:
+
+After restarting PostgreSQL, the system reports healthy.
+
+**Agent response (after PostgreSQL restarted):**
+“The LMS backend is healthy. No errors found in the last 2 minutes. All 8 labs are available.”
