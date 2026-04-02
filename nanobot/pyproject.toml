@@ -12,6 +12,7 @@ dependencies = [
     "opentelemetry-instrumentation-logging>=0.61b0",
     "mcp-lms",
     "mcp-webchat",
+    "mcp-obs",
     "nanobot-channel-protocol",
     "nanobot-webchat",
     "nanobot-ai",
@@ -23,4 +24,5 @@ mcp-lms = { workspace = true }
 mcp-webchat = { workspace = true }
 nanobot-channel-protocol = { workspace = true }
 nanobot-webchat = { workspace = true }
+mcp-obs = { workspace = true }
 nanobot-ai = { url = "https://github.com/HKUDS/nanobot/archive/e7d371ec1e6531b28898ec2c869ef338e8dd46ec.zip" }
