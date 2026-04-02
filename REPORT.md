@@ -122,3 +122,76 @@ lab-08: lab-08
 
 Flutter client: http://vm-ip:42002/flutter
 Access key: 12345
+
+---
+## Task 3A — Structured logging
+
+Happy-path log excerpt (status 200):
+{\"_time\": \"2026-04-01T23:57:52.919Z\", \"severity\": \"INFO\", \"service.name\": \"Learning Management Service\", \"event\": \"request_started\", \"trace_id\": \"a1713b6ac54a251ad4dac048abd48ba0\"}
+{\"_time\": \"2026-04-01T23:57:52.920Z\", \"severity\": \"INFO\", \"service.name\": \"Learning Management Service\", \"event\": \"auth_success\", \"trace_id\": \"a1713b6ac54a251ad4dac048abd48ba0\"}
+{\"_time\": \"2026-04-01T23:57:52.920Z\", \"severity\": \"INFO\", \"service.name\": \"Learning Management Service\", \"event\": \"db_query\", \"table\": \"item\"}
+{\"_time\": \"2026-04-01T23:57:53.241Z\", \"severity\": \"INFO\", \"service.name\": \"Learning Management Service\", \"event\": \"request_completed\", \"trace_id\": \"a1713b6ac54a251ad4dac048abd48ba0\"}
+
+Error-path log excerpt (db_query with error):
+{\"_time\": \"2026-04-01T23:57:53.241Z\", \"severity\": \"ERROR\", \"service.name\": \"Learning Management Service\", \"event\": \"db_query\", \"error\": \"[Errno -2] Name or service not known\", \"trace_id\": \"a1713b6ac54a251ad4dac048abd48ba0\", \"span_id\": \"8c61c56fe4e7bd6e\"}
+
+VictoriaLogs UI: http://vm-ip:42002/utils/victorialogs/select/vmui
+Query: _time:1h service.name:Learning Management Service severity:ERROR
+
+## Task 3B — Traces
+
+VictoriaTraces UI: http://vm-ip:42002/utils/victoriatraces
+
+Healthy trace: trace_id=1ff969f07f5d7b054110de0fc8267cf3
+Span hierarchy: request_started -> auth_success -> db_query -> request_completed (200 OK)
+
+Error trace: trace_id=210008ca7cf723536de841d6b29504af
+Span hierarchy: request_started -> auth_success -> db_query (ERROR: connection is closed)
+
+
+---
+
+## Task 3C — Observability MCP tools
+
+### Agent response (normal conditions):
+
+Question: Any LMS backend errors in the last 10 minutes?
+
+Agent response:
+"Based on my investigation:
+
+LMS Backend Status: Healthy
+
+The LMS backend is currently healthy with 56 items in the database.
+Error Count: No errors found in the last 10 minutes for the Learning Management Service.
+
+Trace Analysis: Retrieved recent traces showing normal operation with successful database queries and request completion."
+
+Tool calls observed:
+
+mcp_obs_logs_error_count({"service": "Learning Management Service", "hours": 0})
+mcp_obs_logs_search({"query": "_time:10m service.name:\"Learning Management Service\" severity:ERROR", "limit": 10})
+mcp_obs_logs_search({"query": "_time:10m severity:ERROR", "limit": 5})
+mcp_obs_traces_list({"service": "Learning Management Service", "limit": 5})
+
+### Agent response (after triggering failure):
+
+Question: Any LMS backend errors in the last 10 minutes?
+
+Agent response: "The LMS backend is currently unhealthy and returning HTTP 404 errors. This means the service is not available at the moment."
+
+Tool calls observed:
+
+mcp_obs_logs_error_count({"service": "Learning Management Service", "hours": 0})
+mcp_obs_logs_search({"query": "_time:10m severity:ERROR service.name:\"Learning Management Service\"", "limit": 10})
+mcp_obs_logs_search({"query": "_time:10m severity:ERROR", "limit": 5})
+
+MCP tools registered:
+
+mcp_obs_logs_search
+mcp_obs_logs_error_count
+mcp_obs_traces_list
+mcp_obs_traces_get
+
+
+---
